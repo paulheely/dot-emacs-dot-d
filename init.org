@@ -215,11 +215,27 @@
    buffer-local variable's default value.
 
    #+BEGIN_SRC emacs-lisp
-   (setq-default fill-column 79                    ; Maximum line width
+   (setq-default fill-column 80                    ; Maximum line width
                  truncate-lines t                  ; Don't fold lines
                  indent-tabs-mode nil              ; Use spaces instead of tabs
-                 split-width-threshold 100         ; Split verticly by default
+                 split-width-threshold 160         ; Split verticly by default
                  auto-fill-function 'do-auto-fill) ; Auto-fill-mode everywhere
+   #+END_SRC
+
+   Since we increased the default maximum line width to 120, lets have larger frames when opening windows
+   
+   #+BEGIN_SRC emacs-lisp
+   (setq initial-frame-alist
+         '(
+           (width . 125) ; character
+           (height . 60) ; lines
+           ))
+
+   (setq default-frame-alist
+         '(
+           (width . 122) ; character
+           (height . 58) ; lines
+           ))
    #+END_SRC
 
    Answering /yes/ and /no/ to each question from Emacs can be tedious, a
@@ -276,7 +292,22 @@
               show-paren-mode))            ; Highlight matching parentheses
      (funcall mode 1))
    #+END_SRC   
- 
+
+   Support for unfiling a region
+
+   #+BEGIN_SRC emacs-lisp
+    (defun unfill-region (beg end)
+      "Unfill the region, joining text paragraphs into a single
+    logical line.  This is useful, e.g., for use with
+    `visual-line-mode'."
+      (interactive "*r")
+      (let ((fill-column (point-max)))
+        (fill-region beg end)))
+    
+    ;; Handy key definition
+    (define-key global-map "\C-\M-Q" 'unfill-region)
+  #+END_SRC
+   
 ** Visual
    [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]] gives a great visual indication of where you've made
    changes since your last commit. There are several packages that performs
@@ -304,10 +335,22 @@
                                           ("phi" . ?φ)
                                           ("psi" . ?ψ)))
    #+END_SRC  
-** Org
+   
+   Enable word count display.
 
    #+BEGIN_SRC emacs-lisp
-   (require 'org)
+   (use-package wc-mode
+     :ensure t)
+   #+END_SRC
+
+
+** Org
+   I use org extensivly and like the look of org-indent-mode
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package org
+     :config
+     (setq org-startup-indented t))
    #+END_SRC
 
 ** Org-ref
@@ -337,3 +380,4 @@
    #+END_SRC
    
    
+ 

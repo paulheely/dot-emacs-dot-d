@@ -31,9 +31,9 @@ tangled, and the tangled file is compiled."
 (let* ((packages
         '(auto-compile         ; automatically compile Emacs Lisp libraries
           exec-path-from-shell ; sets exec-path and $PATH from shell (OS X)
-          idle-require         ; load elisp libraries while Emacs is idle
+          idle-require         ; load emacs-lisp libraries while Emacs is idle
           git-gutter-fringe    ; Fringe version of git-gutter.el
-          org))                ; Outline-based notes management and organizer
+          org))                  ; Outline-based notes management and organizer
        ;; Remove all packages already installed
        (packages (cl-remove-if 'package-installed-p packages)))
   (when packages
@@ -42,6 +42,12 @@ tangled, and the tangled file is compiled."
                    ;; This package is only relevant for Mac OS X.
                    (when (memq window-system '(mac ns))
                      (package-install 'exec-path-from-shell)))))
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(require 'use-package)
 
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
@@ -55,11 +61,36 @@ tangled, and the tangled file is compiled."
 (setq idle-require-idle-delay 5)
 (idle-require-mode 1)
 
-(setq-default fill-column 79                    ; Maximum line width
+(setq ;;auto-revert-interval 1            ; Refresh buffers fast
+      ;;custom-file (make-temp-file "")   ; Discard customization's
+      ;;default-input-method "TeX"        ; Use TeX when toggling input method
+      echo-keystrokes 0.1               ; Show keystrokes asap
+      inhibit-startup-message t         ; No splash screen please
+      initial-scratch-message nil       ; Clean scratch buffer
+      ;;recentf-max-saved-items 100       ; Show more recent files
+      ring-bell-function 'ignore        ; Quiet
+      sentence-end-double-space nil)    ; No double space
+;; Some mac-bindings interfere with Emacs bindings.
+;; (when (boundp 'mac-pass-command-to-system)
+;;   (setq mac-pass-command-to-system nil))
+
+(setq-default fill-column 80                    ; Maximum line width
               truncate-lines t                  ; Don't fold lines
               indent-tabs-mode nil              ; Use spaces instead of tabs
-              split-width-threshold 100         ; Split verticly by default
+              split-width-threshold 160         ; Split verticly by default
               auto-fill-function 'do-auto-fill) ; Auto-fill-mode everywhere
+
+(setq initial-frame-alist
+      '(
+        (width . 125) ; character
+        (height . 60) ; lines
+        ))
+
+(setq default-frame-alist
+      '(
+        (width . 122) ; character
+        (height . 58) ; lines
+        ))
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -89,6 +120,17 @@ tangled, and the tangled file is compiled."
            show-paren-mode))            ; Highlight matching parentheses
   (funcall mode 1))
 
+(defun unfill-region (beg end)
+  "Unfill the region, joining text paragraphs into a single
+logical line.  This is useful, e.g., for use with
+`visual-line-mode'."
+  (interactive "*r")
+  (let ((fill-column (point-max)))
+    (fill-region beg end)))
+
+;; Handy key definition
+(define-key global-map "\C-\M-Q" 'unfill-region)
+
 (require 'git-gutter-fringe)
 
 (dolist (p '((git-gutter:added    . "#0c0")
@@ -102,3 +144,32 @@ tangled, and the tangled file is compiled."
                                        ("gamma" . ?Γ)
                                        ("phi" . ?φ)
                                        ("psi" . ?ψ)))
+
+(use-package wc-mode
+  :ensure t)
+
+(use-package org
+  :config
+  (setq org-startup-indented t))
+
+(use-package org-ref
+  :ensure t)
+
+(setq reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
+
+;; see org-ref for use of these variables
+(setq org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
+      org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib")
+      org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/")
+
+(setq bibtex-completion-bibliography "~/Dropbox/bibliography/references.bib"
+      bibtex-completion-library-path "~/Dropbox/bibliography/bibtex-pdfs"
+      bibtex-completion-notes-path "~/Dropbox/bibliography/helm-bibtex-notes")
+
+;; open pdf with system pdf viewer (works on mac)
+;;(setq bibtex-completion-pdf-open-function
+;;  (lambda (fpath)
+;;    (start-process "open" "*open*" "open" fpath)))
+
+;; alternative
+(setq bibtex-completion-pdf-open-function 'org-open-file)

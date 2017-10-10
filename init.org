@@ -215,11 +215,10 @@
    buffer-local variable's default value.
 
    #+BEGIN_SRC emacs-lisp
-   (setq-default fill-column 80                    ; Maximum line width
+   (setq-default ;fill-column 80                    ; Maximum line width
                  truncate-lines t                  ; Don't fold lines
                  indent-tabs-mode nil              ; Use spaces instead of tabs
-                 split-width-threshold 160         ; Split verticly by default
-                 auto-fill-function 'do-auto-fill) ; Auto-fill-mode everywhere
+                 split-width-threshold 160)         ; Split verticly by default
    #+END_SRC
 
    Since we increased the default maximum line width to 120, lets have larger frames when opening windows
@@ -352,6 +351,17 @@
      :config
      (setq org-startup-indented t))
    #+END_SRC
+
+   Lets setup some helpful stuff
+   #+BEGIN_SRC emacs-lisp
+   (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+
+   #+END_SRC
+
+   
+
 
 ** Org-ref
 

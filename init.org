@@ -7,7 +7,6 @@
 #+PROPERTY: header-args :tangle yes
 
 * Credit
-
   Original files that form the basis of this customized version were downloaded from Lars Tveito's GitHub repository, [[https://github.com/larstvei/dot-emacs.git]].
   
 * About
@@ -357,7 +356,7 @@
    (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
-
+(setq org-deadline-warning-days 0)
    #+END_SRC
 
    

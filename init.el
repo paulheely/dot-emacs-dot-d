@@ -154,6 +154,7 @@ logical line.  This is useful, e.g., for use with
 (define-key org-mode-map "\M-q" 'toggle-truncate-lines)
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
+(setq org-deadline-warning-days 0)
 
 (use-package org-ref
   :ensure t)
@@ -176,17 +177,3 @@ logical line.  This is useful, e.g., for use with
 
 ;; alternative
 (setq bibtex-completion-pdf-open-function 'org-open-file)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   (quote
-    ("~/Dropbox/Affiliate Marketing/Training/MOBE/21 Step System.org"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

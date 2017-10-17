@@ -6,6 +6,7 @@
 #+LATEX_HEADER: \usepackage[utf8]{inputenc}
 #+PROPERTY: header-args :tangle yes
 
+
 * Credit
 
   Original files that form the basis of this customized version were downloaded from Lars Tveito's GitHub repository, [[https://github.com/larstvei/dot-emacs.git]].
@@ -358,7 +359,7 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 
-   #+END_SRC
+#+END_SRC
 
    
 

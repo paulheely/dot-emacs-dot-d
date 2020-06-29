@@ -96,8 +96,8 @@
   #+END_SRC
 
 * Package Control
-** Package Manager
-   Load some additional repos to pull packages from
+** Package Manager 
+  Load some additional repos to pull packages from
    #+BEGIN_SRC emacs-lisp
      (require 'package)
      (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
@@ -261,7 +261,7 @@
     (global-set-key "\C-cg" (lambda () (interactive) (find-file "~/git/gtd/gtd.org")))
     (global-set-key "\C-ci" (lambda () (interactive) (find-file "~/git/gtd/inbox.org")))
     (global-set-key "\C-ce" (lambda () (interactive) (find-file "~/.emacs.d/init.org")))
-    (global-set-key "\C-cd" (lambda () (interactive) (dired "~/Documents/Docs/_Archive/2020/_Drafts")))
+    (global-set-key "\C-cd" (lambda () (interactive) (dired (getenv "DRAFTS_DIR"))))
   #+END_SRC
 
 * Mode Configuration

@@ -237,7 +237,7 @@
    (use-package dired
      :config
        (setq dired-use-ls-dired t
-             insert-directory-program "/usr/local/bin/gls"
+             insert-directory-program "~/scoop/shims/ls.exe"
              dired-listing-switches "-ahlr"))
    #+END_SRC
 
@@ -262,7 +262,8 @@
     (global-set-key "\C-ci" (lambda () (interactive) (find-file "~/git/gtd/inbox.org")))
     (global-set-key "\C-ce" (lambda () (interactive) (find-file "~/.emacs.d/init.org")))
     (global-set-key "\C-cd" (lambda () (interactive) (dired (getenv "DRAFTS_DIR"))))
-  #+END_SRC
+    (global-set-key "\C-cp" (lambda () (interactive) (dired (concat (getenv "DRAFTS_DIR") "/*-P-*"))))
+    #+END_SRC
 
 * Mode Configuration
 ** YAML
@@ -289,6 +290,7 @@
   #+BEGIN_SRC emacs-lisp 
     (use-package python
       :mode ("\\.py\\'" . python-mode)
+
       :interpreter ("python3" . python-mode)
       
       :init (setq-default indent-tabs-mode nil)
@@ -311,9 +313,7 @@
     (global-set-key "\C-ca" 'org-agenda)
     (global-set-key "\C-cc" 'org-capture)
 
-    (setq org-agenda-files '("~/git/gtd/inbox.org"
-                             "~/git/gtd/gtd.org"
-                             "~/git/gtd/tickler.org"))
+    (setq org-agenda-files (quote ("~/Documents/Docs/Archive/2021/_Drafts")))
 
     (setq org-capture-templates '(("t" "Todo [inbox]" entry
                                     (file+headline "~/git/gtd/inbox.org" "Tasks")
@@ -335,7 +335,7 @@
     (setq org-agenda-custom-commands
       '(("D" "Done" todo "DONE")
         ("N" "Next" todo "NEXT")))
-        
+
     ; add some priorites so that the usual A, B, C can be used
     ; and set the default to D so non prioritized items fall to the 
     ; bottom of the egenda

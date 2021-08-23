@@ -12,4 +12,6 @@
 
 elpa/
 transient/
+autosaves/
+bookmarks
 
